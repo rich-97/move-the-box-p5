@@ -1,0 +1,27 @@
+{
+  "name": "move-the-box",
+  "version": "1.0.0",
+  "description": "The game Move the box",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rich-97/move-the-box.git"
+  },
+  "keywords": [
+    "Box",
+    "Game",
+    "Move"
+  ],
+  "author": "Ricardo Moreno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rich-97/move-the-box/issues"
+  },
+  "homepage": "https://github.com/rich-97/move-the-box#readme",
+  "dependencies": {
+    "p5": "^0.5.16"
+  }
+}
