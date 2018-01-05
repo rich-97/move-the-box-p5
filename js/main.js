@@ -78,14 +78,13 @@ function setup() {
 			return index !== indexFilter;
 		});
 		box.squares = box.squares.concat(blocks);
-
-		console.log(box.squares);
 	});
 
 	player.squares = boxes.concat(blocks);
 }
 
 function draw() {
+	frameRate(10);
 	background(0);
 	fill.call(null, PLAYER_COLOR);
 	player.render();
@@ -97,8 +96,8 @@ function draw() {
 	boxes.forEach(function(box) {
 		box.render();
 	});
-}
 
-function keyPressed() {
-	player.updatePos(keyCode);
+	if (keyIsPressed) {
+		player.updatePos(keyCode);
+	}
 }

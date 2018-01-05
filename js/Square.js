@@ -116,22 +116,34 @@ function Square(size) {
 			if (diffX === -diff || diffX === diff) {
 				if (diffY === 0 || diffY >= -diff && diffY <= diff) {
 					if (sqToMove.isStatic) {
-						that.moveTo(tempCoords[0], tempCoords[1]);
+						if (keyCode === RIGHT_ARROW) {
+							that.stopedX = 1;
+							that.x -= SCALE;
+						} else {
+							that.stopedX = -1;
+							that.x += SCALE;
+						}
 					} else {
 						if (sqToMove.stopedX === null) {
 							sqToMove.x = coordsSq.x;
 
 							sqToMove.updatePos(keyCode);
-						}
 
-						if (sqToMove.stopedX === -1) {
-							that.x += SCALE;
-							that.stopedX = -1;
-						}
+							if (sqToMove.stopedX !== null) {
+								that.moveTo(tempCoords[0], tempCoords[1]);
 
-						if (sqToMove.stopedX === 1) {
-							that.x -= SCALE;
-							that.stopedX = 1;
+								that.stopedX = sqToMove.stopedX;
+							}
+						} else {
+							if (sqToMove.stopedX === -1) {
+								that.x += SCALE;
+								that.stopedX = -1;
+							}
+
+							if (sqToMove.stopedX === 1) {
+								that.x -= SCALE;
+								that.stopedX = 1;
+							}
 						}
 					}
 				}
@@ -140,22 +152,34 @@ function Square(size) {
 			if (diffY === -diff || diffY === diff) {
 				if (diffX === 0 || diffX >= -diff && diffX <= diff) {
 					if (sqToMove.isStatic) {
-						that.moveTo(tempCoords[0], tempCoords[1]);
+						if (keyCode === DOWN_ARROW) {
+							that.stopedY = 1;
+							that.y -= SCALE;
+						} else {
+							that.stopedY = -1;
+							that.y += SCALE;
+						}
 					} else {
 						if (sqToMove.stopedY === null) {
 							sqToMove.y = coordsSq.y;
 
 							sqToMove.updatePos(keyCode);
-						}
 
-						if (sqToMove.stopedY === -1) {
-							that.y += SCALE;
-							that.stopedY = -1;
-						}
+							if (sqToMove.stopedY !== null) {
+								that.moveTo(tempCoords[0], tempCoords[1]);
 
-						if (sqToMove.stopedY === 1) {
-							that.y -= SCALE;
-							that.stopedY = 1;
+								that.stopedY = sqToMove.stopedY;
+							}
+						} else {
+							if (sqToMove.stopedY === -1) {
+								that.y += SCALE;
+								that.stopedY = -1;
+							}
+
+							if (sqToMove.stopedY === 1) {
+								that.y -= SCALE;
+								that.stopedY = 1;
+							}
 						}
 					}
 				}
