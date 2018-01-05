@@ -1,10 +1,11 @@
 function Square(size) {
 	this.w = size; this.h = size;
 	this.x = 0; this.y = 0;
-	this.squares = [];
+	this.squares   = [];
 	this.inmovable = false;
-	this.stopedX = null;
-	this.stopedY = null;
+	this.stopedX   = null;
+	this.stopedY   = null;
+	this.isStatic  = false;
 
 	this.render = function(x, y) {
 		rect(this.x, this.y, this.w, this.h);
@@ -22,7 +23,8 @@ function Square(size) {
 
 	this.updatePos = function(keyCode) {
 		var squaresToMove = [];
-		var thisCoords    = { x: this.x, y: this.y };
+		var tempCoords    = [ this.x, this.y ];
+		var thisCoords    = [ this.x, this.y ];
 		var that          = this;
 
 		this.squares.forEach(function(square) {
@@ -37,8 +39,9 @@ function Square(size) {
 
 		switch(keyCode) {
 			case UP_ARROW:
-				if (thisCoords.y > 0) {
-					thisCoords.y -= SCALE;
+				if (thisCoords[1] > 0) {
+					thisCoords[1] -= SCALE;
+					this.stopedY = null;
 				}
 
 				squaresToMove.forEach(function(squareToMove) {
@@ -51,8 +54,9 @@ function Square(size) {
 				});
 				break;
 			case DOWN_ARROW:
-				if (thisCoords.y + SQUARE_SIZE !== CANVAS_SIZE[1]) {
-					thisCoords.y += SCALE;
+				if (thisCoords[1] + SQUARE_SIZE !== CANVAS_SIZE[1]) {
+					thisCoords[1] += SCALE;
+					this.stopedY = null;
 				}
 
 				squaresToMove.forEach(function(squareToMove) {
@@ -65,8 +69,9 @@ function Square(size) {
 				});
 				break;
 			case LEFT_ARROW:
-				if (thisCoords.x > 0) {
-					thisCoords.x -= SCALE;
+				if (thisCoords[0] > 0) {
+					thisCoords[0] -= SCALE;
+					this.stopedX = null;
 				}
 
 				squaresToMove.forEach(function(squareToMove) {
@@ -79,8 +84,9 @@ function Square(size) {
 				});
 				break;
 			case RIGHT_ARROW:
-				if (thisCoords.x + SQUARE_SIZE !== CANVAS_SIZE[0]) {
-					thisCoords.x += SCALE;
+				if (thisCoords[0] + SQUARE_SIZE !== CANVAS_SIZE[0]) {
+					thisCoords[0] += SCALE;
+					this.stopedX = null;
 				}
 
 				squaresToMove.forEach(function(squareToMove) {
@@ -97,7 +103,7 @@ function Square(size) {
 		}
 
 		if (!this.inmovable) {
-			this.moveTo(thisCoords.x, thisCoords.y);
+			this.moveTo(thisCoords[0], thisCoords[1]);
 		}
 
 		squaresToMove.forEach(function(squareToMove) {
@@ -109,34 +115,48 @@ function Square(size) {
 
 			if (diffX === -diff || diffX === diff) {
 				if (diffY === 0 || diffY >= -diff && diffY <= diff) {
-					sqToMove.x = coordsSq.x;
-					sqToMove.updatePos(keyCode);
+					if (sqToMove.isStatic) {
+						that.moveTo(tempCoords[0], tempCoords[1]);
+					} else {
+						if (sqToMove.stopedX === null) {
+							sqToMove.x = coordsSq.x;
 
-					if (sqToMove.stopedX === -1) {
-						that.x += SCALE;
-						that.stopedX = -1;
-					}
+							sqToMove.updatePos(keyCode);
+						}
 
-					if (sqToMove.stopedX === 1) {
-						that.x -= SCALE;
-						that.stopedX = 1;
+						if (sqToMove.stopedX === -1) {
+							that.x += SCALE;
+							that.stopedX = -1;
+						}
+
+						if (sqToMove.stopedX === 1) {
+							that.x -= SCALE;
+							that.stopedX = 1;
+						}
 					}
 				}
 			}
 
 			if (diffY === -diff || diffY === diff) {
 				if (diffX === 0 || diffX >= -diff && diffX <= diff) {
-					sqToMove.y = coordsSq.y;
-					sqToMove.updatePos(keyCode);
+					if (sqToMove.isStatic) {
+						that.moveTo(tempCoords[0], tempCoords[1]);
+					} else {
+						if (sqToMove.stopedY === null) {
+							sqToMove.y = coordsSq.y;
 
-					if (sqToMove.stopedY === -1) {
-						that.y += SCALE;
-						that.stopedY = -1;
-					}
+							sqToMove.updatePos(keyCode);
+						}
 
-					if (sqToMove.stopedY === 1) {
-						that.y -= SCALE;
-						that.stopedY = 1;
+						if (sqToMove.stopedY === -1) {
+							that.y += SCALE;
+							that.stopedY = -1;
+						}
+
+						if (sqToMove.stopedY === 1) {
+							that.y -= SCALE;
+							that.stopedY = 1;
+						}
 					}
 				}
 			}
