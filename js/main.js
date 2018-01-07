@@ -4,7 +4,7 @@ window.onload = function() {
 	$wrap.appendChild(canvas);
 }
 
-var player, level, boxes = [], blocks = [];
+var player, level, boxes = [], blocks = [], boxPoints = [];
 
 function preload() {
 	level = {
@@ -67,6 +67,12 @@ function preload() {
 		newBlock.moveTo(block[0], block[1]);
 		blocks.push(newBlock);
 	});
+	level.boxPoints.forEach(function(boxPoint) {
+		var newBoxPoint = new Square(SQUARE_SIZE);
+
+		newBoxPoint.moveTo(boxPoint[0], boxPoint[1]);
+		boxPoints.push(newBoxPoint);
+	});
 }
 
 function setup() {
@@ -86,8 +92,6 @@ function setup() {
 function draw() {
 	frameRate(10);
 	background(0);
-	fill.call(null, PLAYER_COLOR);
-	player.render();
 	fill.call(null, BLOCK_COLOR);
 	blocks.forEach(function(block) {
 		block.render();
@@ -96,6 +100,12 @@ function draw() {
 	boxes.forEach(function(box) {
 		box.render();
 	});
+	fill.call(null, BOX_POINT_COLOR);
+	boxPoints.forEach(function(boxPoint) {
+		boxPoint.render();
+	});
+	fill.call(null, PLAYER_COLOR);
+	player.render();
 
 	if (keyIsPressed) {
 		player.updatePos(keyCode);
