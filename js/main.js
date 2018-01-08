@@ -9,11 +9,12 @@ var player, level, boxes = [], blocks = [], boxPoints = [];
 function preload() {
 	level = {
 		"level": "1",
-		"player": [ 0, 0 ],
+		"player": [ 150, 50 ],
 		"boxes": [
 				[ 200, 50 ],
-				[ 300, 100 ],
-				[ 300, 300 ]
+				[ 250, 50 ],
+				[ 300, 50 ],
+				[ 350, 50 ]
 		],
 		"blocks": [
 			[ 50, 0 ],
@@ -53,24 +54,24 @@ function preload() {
 
 	player = new Square(SQUARE_SIZE);
 
-	player.moveTo.call(null, level.player);
+	player.moveTo(level.player);
 	level.boxes.forEach(function(box) {
 		var newBox = new Square(SQUARE_SIZE);
 
-		newBox.moveTo(box[0], box[1]);
+		newBox.moveTo(box);
 		boxes.push(newBox);
 	});
 	level.blocks.forEach(function(block) {
 		var newBlock = new Square(SQUARE_SIZE);
 		newBlock.isStatic = true;
 
-		newBlock.moveTo(block[0], block[1]);
+		newBlock.moveTo(block);
 		blocks.push(newBlock);
 	});
 	level.boxPoints.forEach(function(boxPoint) {
 		var newBoxPoint = new Square(SQUARE_SIZE);
 
-		newBoxPoint.moveTo(boxPoint[0], boxPoint[1]);
+		newBoxPoint.moveTo(boxPoint);
 		boxPoints.push(newBoxPoint);
 	});
 }
@@ -92,19 +93,19 @@ function setup() {
 function draw() {
 	frameRate(10);
 	background(0);
-	fill.call(null, BLOCK_COLOR);
+	fill.apply(null, BLOCK_COLOR);
 	blocks.forEach(function(block) {
 		block.render();
 	});
-	fill.call(null, BOX_COLOR);
-	boxes.forEach(function(box) {
-		box.render();
-	});
-	fill.call(null, BOX_POINT_COLOR);
+	fill.apply(null, BOX_POINT_COLOR);
 	boxPoints.forEach(function(boxPoint) {
 		boxPoint.render();
 	});
-	fill.call(null, PLAYER_COLOR);
+	fill.apply(null, BOX_COLOR);
+	boxes.forEach(function(box) {
+		box.render();
+	});
+	fill.apply(null, PLAYER_COLOR);
 	player.render();
 
 	if (keyIsPressed) {

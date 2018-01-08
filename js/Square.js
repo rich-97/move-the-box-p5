@@ -11,14 +11,14 @@ function Square(size) {
 		rect(this.x, this.y, this.w, this.h);
 	};
 
-	this.moveTo = function(x, y) {
-		this.x = x; this.y = y;
+	this.moveTo = function(coords) {
+		this.x = coords[0]; this.y = coords[1];
 	};
 
 	this.moveRandomly = function() {
 		var x = random(0, width - SQUARE_SIZE), y = random(0, height - SQUARE_SIZE);
 
-		this.moveTo(roundRandom(x), roundRandom(y));
+		this.moveTo([ roundRandom(x), roundRandom(y) ]);
 	};
 
 	this.updatePos = function(keyCode) {
@@ -103,7 +103,7 @@ function Square(size) {
 		}
 
 		if (!this.inmovable) {
-			this.moveTo(thisCoords[0], thisCoords[1]);
+			this.moveTo(thisCoords);
 		}
 
 		squaresToMove.forEach(function(squareToMove) {
@@ -130,7 +130,7 @@ function Square(size) {
 							sqToMove.updatePos(keyCode);
 
 							if (sqToMove.stopedX !== null) {
-								that.moveTo(tempCoords[0], tempCoords[1]);
+								that.moveTo(tempCoords);
 
 								that.stopedX = sqToMove.stopedX;
 							}
@@ -166,7 +166,7 @@ function Square(size) {
 							sqToMove.updatePos(keyCode);
 
 							if (sqToMove.stopedY !== null) {
-								that.moveTo(tempCoords[0], tempCoords[1]);
+								that.moveTo(tempCoords);
 
 								that.stopedY = sqToMove.stopedY;
 							}
