@@ -9,12 +9,11 @@ var player, level, boxes = [], blocks = [], boxPoints = [];
 function preload() {
 	level = {
 		"level": "1",
-		"player": [ 150, 50 ],
+		"player": [ 150, 0 ],
 		"boxes": [
 				[ 200, 50 ],
-				[ 250, 50 ],
-				[ 300, 50 ],
-				[ 350, 50 ]
+				[ 300, 100 ],
+				[ 300, 300 ]
 		],
 		"blocks": [
 			[ 50, 0 ],
@@ -107,6 +106,22 @@ function draw() {
 	});
 	fill.apply(null, PLAYER_COLOR);
 	player.render();
+
+	var levelCompleted = true;
+
+	boxPoints.forEach(function(boxPoint, index) {
+		var box = boxes.filter(function(box) {
+			return box.x === boxPoint.x && box.y === boxPoint.y;
+		})[0];
+
+		if (!box) {
+			levelCompleted = false;
+		}
+	});
+
+	if (levelCompleted) {
+		console.log('Level completed!');
+	}
 
 	if (keyIsPressed) {
 		player.updatePos(keyCode);

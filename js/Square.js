@@ -1,13 +1,13 @@
 function Square(size) {
 	this.w = size; this.h = size;
-	this.x = 0; this.y = 0;
+	this.x = 0;    this.y = 0;
 	this.squares   = [];
 	this.inmovable = false;
 	this.stopedX   = null;
 	this.stopedY   = null;
 	this.isStatic  = false;
 
-	this.render = function(x, y) {
+	this.render = function() {
 		rect(this.x, this.y, this.w, this.h);
 	};
 
@@ -19,6 +19,25 @@ function Square(size) {
 		var x = random(0, width - SQUARE_SIZE), y = random(0, height - SQUARE_SIZE);
 
 		this.moveTo([ roundRandom(x), roundRandom(y) ]);
+	};
+
+	this.moveBack = function(keyCode) {
+		switch(keyCode) {
+			case RIGHT_ARROW:
+				this.x -= SCALE;
+				break;
+			case LEFT_ARROW:
+				this.x += SCALE;
+				break;
+			case UP_ARROW:
+				this.y += SCALE;
+				break;
+			case DOWN_ARROW:
+				this.y -= SCALE;
+				break;
+			default:
+				return false;
+		}
 	};
 
 	this.updatePos = function(keyCode) {
@@ -106,7 +125,7 @@ function Square(size) {
 			this.moveTo(thisCoords);
 		}
 
-		squaresToMove.forEach(function(squareToMove) {
+		squaresToMove.forEach(function(squareToMove, index) {
 			var coordsSq = squareToMove[0];
 			var sqToMove = squareToMove[1];
 			var diffX    = that.x - sqToMove.x;
@@ -116,12 +135,10 @@ function Square(size) {
 			if (diffX === -diff || diffX === diff) {
 				if (diffY === 0 || diffY >= -diff && diffY <= diff) {
 					if (sqToMove.isStatic) {
-						if (keyCode === RIGHT_ARROW) {
-							that.stopedX = 1;
-							that.x -= SCALE;
-						} else {
-							that.stopedX = -1;
-							that.x += SCALE;
+						that.stopedX = keyCode === RIGHT_ARROW ? 1 : -1;
+						
+						if (!that.inmovable) {
+							that.moveBack(keyCode);
 						}
 					} else {
 						if (sqToMove.stopedX === null) {
@@ -132,17 +149,17 @@ function Square(size) {
 							if (sqToMove.stopedX !== null) {
 								that.moveTo(tempCoords);
 
+								if (!sqToMove.isStatic) {
+									sqToMove.moveBack(keyCode);
+								}
+
 								that.stopedX = sqToMove.stopedX;
 							}
 						} else {
-							if (sqToMove.stopedX === -1) {
-								that.x += SCALE;
-								that.stopedX = -1;
-							}
+							that.stopedX = sqToMove.stopedX;
 
-							if (sqToMove.stopedX === 1) {
-								that.x -= SCALE;
-								that.stopedX = 1;
+							if (!that.inmovable) {
+								that.moveBack(keyCode);
 							}
 						}
 					}
@@ -152,12 +169,10 @@ function Square(size) {
 			if (diffY === -diff || diffY === diff) {
 				if (diffX === 0 || diffX >= -diff && diffX <= diff) {
 					if (sqToMove.isStatic) {
-						if (keyCode === DOWN_ARROW) {
-							that.stopedY = 1;
-							that.y -= SCALE;
-						} else {
-							that.stopedY = -1;
-							that.y += SCALE;
+						that.stopedY = keyCode === DOWN_ARROW ? 1 : -1;
+						
+						if (!that.inmovable) {
+							that.moveBack(keyCode);
 						}
 					} else {
 						if (sqToMove.stopedY === null) {
@@ -168,17 +183,17 @@ function Square(size) {
 							if (sqToMove.stopedY !== null) {
 								that.moveTo(tempCoords);
 
+								if (!sqToMove.isStatic) {
+									sqToMove.moveBack(keyCode);
+								}
+
 								that.stopedY = sqToMove.stopedY;
 							}
 						} else {
-							if (sqToMove.stopedY === -1) {
-								that.y += SCALE;
-								that.stopedY = -1;
-							}
+							that.stopedY = sqToMove.stopedY;
 
-							if (sqToMove.stopedY === 1) {
-								that.y -= SCALE;
-								that.stopedY = 1;
+							if (!that.inmovable) {
+								that.moveBack(keyCode);
 							}
 						}
 					}
